@@ -26,11 +26,11 @@ public class ReceiveClient extends Thread {
     public void run() {
         try {
             socket = serverSocket.accept();
+            scanner = new Scanner(socket.getInputStream());
             sendClient.setSocket(socket);
 
             while (true) {
                 System.out.println("Listening for traffic on port " + serverSocket.getLocalPort());
-                scanner = new Scanner(socket.getInputStream());
                 String clientMessage = scanner.nextLine();
                 System.out.println("Client Message: " + clientMessage);
 

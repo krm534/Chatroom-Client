@@ -1,12 +1,12 @@
 package Server;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Queue;
 
 public class SendClient extends Thread {
     private Server server;
-    private Socket socket;
     private PrintWriter printWriter;
 
     public SendClient(Server server) {
@@ -19,7 +19,6 @@ public class SendClient extends Thread {
             try {
                 Thread.sleep(5000);
                 Queue<String> clientMessages = server.getClientMessagesQueue();
-                printWriter = new PrintWriter(socket.getOutputStream());
 
                 if (clientMessages.size() > 0) {
                     String clientMessage = clientMessages.poll();
@@ -34,6 +33,11 @@ public class SendClient extends Thread {
     }
 
     public void setSocket(Socket socket) {
-        this.socket = socket;
+        try {
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+        } catch (IOException e) {
+            System.out.println("Error Received: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

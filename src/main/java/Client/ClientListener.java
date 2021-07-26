@@ -12,6 +12,7 @@ public class ClientListener extends Thread {
     @Override
     public void run() {
         while (true) {
+            System.out.println("Client Listening!");
             String serverMessage = scanner.nextLine();
             System.out.println("Message received from server: " + serverMessage);
         }
