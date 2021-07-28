@@ -10,15 +10,14 @@ public class Server extends Thread  {
     private ServerSocket serverSocket;
     private int port = 3000;
     private PrintWriter printWriter;
-    private Scanner scanner;
     private HashMap<Integer, Integer> existingClientPorts;
-    private Queue<String> clientMessagesQueue;
+    private ArrayList<SendClient> sendClients;
 
     public Server() {
         try {
+            sendClients = new ArrayList<>();
             existingClientPorts = new HashMap<>();
             serverSocket = new ServerSocket(port);
-            clientMessagesQueue = new LinkedList<>();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -30,12 +29,12 @@ public class Server extends Thread  {
             while (true) {
                 System.out.println("Waiting for connection on port " + port);
                 socket = serverSocket.accept();
-                scanner = new Scanner(socket.getInputStream());
                 System.out.println("Initiation message received from client " + socket.getInetAddress().getHostAddress());
 
                 // Create new client listener and sender threads
                 int newClientPort = generateClientListenPort();
                 SendClient sendClient = new SendClient(this);
+                sendClients.add(sendClient);
                 ReceiveClient receiveClient = new ReceiveClient(newClientPort, this, sendClient);
                 sendClient.start();
                 receiveClient.start();
@@ -68,11 +67,11 @@ public class Server extends Thread  {
         return randomPort;
     }
 
-    public void addClientMessageToQueue(String message) {
-        clientMessagesQueue.add(message);
-    }
-
-    public Queue<String> getClientMessagesQueue() {
-        return clientMessagesQueue;
+    public void addToReceiveClientList(String message) {
+        System.out.println("Number of client receivers: " + sendClients.size());
+        for (SendClient clients : sendClients) {
+            clients.appendToMessageQueue(message);
+            System.out.println("Append to message queue sent out!");
+        }
     }
 }

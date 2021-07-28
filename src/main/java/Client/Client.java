@@ -35,25 +35,27 @@ public class Client extends Thread {
                 // Change socket to new port number
                 socket.close();
                 socket = new Socket(socketAddress, port);
-                Scanner newInput = new Scanner(socket.getInputStream());
-                PrintWriter newPrintWriter = new PrintWriter(socket.getOutputStream(), true);
+                input = new Scanner(socket.getInputStream());
+                printWriter = new PrintWriter(socket.getOutputStream(), true);
+                Thread.sleep(3000);
 
                 // Pass client socket information to listener
-                ClientListener clientListener = new ClientListener(newInput);
+                ClientListener clientListener = new ClientListener(input);
                 clientListener.start();
 
                 // Send confirmation back to server
                 printWriter.println("Confirmation");
-                System.out.println("Sent Confirmation!");
 
                 while (true) {
                     scanner = new Scanner(System.in);
                     System.out.print("Enter message to server: ");
-                    newPrintWriter.println(scanner.nextLine());
+                    printWriter.println(scanner.nextLine());
                 }
             } catch (IOException e) {
                 System.out.println("Exception: " + e.getMessage());
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }
+    }
 }

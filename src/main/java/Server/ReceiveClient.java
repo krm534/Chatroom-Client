@@ -35,7 +35,7 @@ public class ReceiveClient extends Thread {
                 System.out.println("Client Message: " + clientMessage);
 
                 if (!clientMessage.equals("Confirmation")) {
-                    server.addClientMessageToQueue(clientMessage);
+                    server.addToReceiveClientList(clientMessage);
                 }
             }
         } catch (IOException e) {
