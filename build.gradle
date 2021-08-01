@@ -6,6 +6,10 @@
  * user guide available at https://docs.gradle.org/4.4.1/userguide/tutorial_java_projects.html
  */
 
+plugins {
+    id "org.openjfx.javafxplugin" version "0.0.10"
+}
+
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 
@@ -25,6 +29,11 @@ dependencies {
 
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'
+}
+
+javafx {
+    version = '12'
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 // Define the main class for the application
