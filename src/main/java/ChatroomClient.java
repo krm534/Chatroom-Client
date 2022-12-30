@@ -11,7 +11,7 @@ public class ChatroomClient extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     final Controller controller = new Controller();
-    final ClientHandler clientHandler = new ClientHandler("147.182.179.7", controller);
+    final ClientHandler clientHandler = new ClientHandler("", controller);
     controller.setClient(clientHandler);
     clientHandler.start();
 
