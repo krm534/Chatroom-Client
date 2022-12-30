@@ -1,0 +1,8 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="400" prefWidth="600" xmlns:fx="http://javafx.com/fxml">
+    <ListView fx:id="listview" prefWidth="500" prefHeight="500" layoutX="250"/>
+    <TextArea fx:id="textarea" prefHeight="150" prefWidth="500" layoutX="250"/>
+    <Button fx:id="button" text="Submit"/>
+</VBox>
