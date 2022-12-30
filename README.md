@@ -1,7 +1,10 @@
 # Chatroom
-Chatroom for multiple clients to communicate over
+Java application that runs the client portion of a chatroom.
 
-# Coming Soon
+## Prerequisites
+The only prerequisite is that the chatroom server located [here](https://github.com/krm534/Chatroom-Server) must be used to communicate with this client.
+
+## Coming Soon
 - Client GUI to make it easier to interface with the server
 - Ability to send images/videos 
 - Ability to see who is online in the chatroom
