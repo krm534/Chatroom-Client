@@ -11,9 +11,9 @@ public class ChatroomClient extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     final Controller controller = new Controller();
-    final Client client = new Client("147.182.179.7", controller);
-    controller.setClient(client);
-    client.start();
+    final ClientHandler clientHandler = new ClientHandler("147.182.179.7", controller);
+    controller.setClient(clientHandler);
+    clientHandler.start();
 
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
     loader.setController(controller);

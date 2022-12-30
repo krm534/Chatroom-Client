@@ -4,13 +4,14 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Client extends Thread {
+public class ClientHandler extends Thread {
   private String address;
   private Controller controller;
   private Socket socket;
-  private static final Logger LOGGER = Logger.getLogger(Client.class.getName());
+  private BufferedWriter bufferedWriter;
+  private static final Logger LOGGER = Logger.getLogger(ClientHandler.class.getName());
 
-  public Client(String address, Controller controller) {
+  public ClientHandler(String address, Controller controller) {
     try {
       this.address = address;
       this.controller = controller;
@@ -33,6 +34,7 @@ public class Client extends Thread {
       // Update server socket to use new port number
       socket = new Socket(address, port);
       input = new Scanner(socket.getInputStream());
+      bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
       // Listen for messages from Server
       while (true) {
@@ -44,7 +46,7 @@ public class Client extends Thread {
   }
 
   public void sendMessageHandler(String message) {
-    final ServerSender serverSender = new ServerSender(socket, message);
+    final ServerSender serverSender = new ServerSender(bufferedWriter, message);
     serverSender.start();
   }
 }

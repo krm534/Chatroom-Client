@@ -20,7 +20,7 @@ public class Controller implements Initializable {
 
   final ObservableList<String> listItems = FXCollections.observableArrayList();
 
-  private Client client;
+  private ClientHandler clientHandler;
 
   private static final Logger LOGGER = Logger.getLogger(Controller.class.getName());
 
@@ -38,14 +38,15 @@ public class Controller implements Initializable {
   }
 
   public void handleButtonClick() throws IOException {
-    client.sendMessageHandler(textarea.getText());
+    clientHandler.sendMessageHandler(textarea.getText());
   }
 
-  public void setClient(Client client) {
-    this.client = client;
+  public void setClient(ClientHandler clientHandler) {
+    this.clientHandler = clientHandler;
   }
 
   public void addMessage(String message) {
     listItems.add(message);
+    textarea.clear();
   }
 }
