@@ -3,6 +3,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +47,11 @@ public class Controller implements Initializable {
   }
 
   public void addMessage(String message) {
-    listItems.add(message);
-    textarea.clear();
+    // Run on Main thread
+    Platform.runLater(
+        () -> {
+          listItems.add(message);
+          textarea.clear();
+        });
   }
 }
