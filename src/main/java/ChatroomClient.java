@@ -11,7 +11,8 @@ public class ChatroomClient extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     final ServerIpAddressController controller = new ServerIpAddressController(primaryStage);
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ServerIpAddress.fxml"));
+    final FXMLLoader loader =
+        new FXMLLoader(getClass().getResource(Constants.SERVER_IP_ADDRESS_FXML_PATH));
     loader.setController(controller);
     primaryStage.setTitle(Constants.CHATROOM_TITLE);
     primaryStage.setScene(new Scene(loader.load()));

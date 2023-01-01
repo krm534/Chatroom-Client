@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +20,8 @@ public class ServerIpAddressController implements Initializable {
 
   private Stage primaryStage;
 
+  private static final Logger LOGGER = Logger.getLogger(ServerIpAddressController.class.getName());
+
   public ServerIpAddressController(Stage primaryStage) {
     this.primaryStage = primaryStage;
   }
@@ -31,7 +35,8 @@ public class ServerIpAddressController implements Initializable {
             final InetAddress inetAddress = InetAddress.getByName(userInput);
             handleChatroomFxmlSetup(inetAddress);
           } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.log(
+                Level.SEVERE, String.format("Server IP Address Exception: %s", ex.getMessage()));
           }
         });
   }
@@ -43,7 +48,7 @@ public class ServerIpAddressController implements Initializable {
     controller.setClient(clientHandler);
     clientHandler.start();
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
+    final FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.MAIN_FXML_PATH));
     loader.setController(controller);
     primaryStage.setScene(new Scene(loader.load()));
   }
