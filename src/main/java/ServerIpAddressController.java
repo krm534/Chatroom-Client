@@ -32,9 +32,14 @@ public class ServerIpAddressController implements Initializable {
         e -> {
           try {
             final String userInput = textField.getText();
+
+            if (null == userInput || userInput.equals("")) {
+              throw new Exception("IP address field is empty");
+            }
+
             final InetAddress inetAddress = InetAddress.getByName(userInput);
             handleChatroomFxmlSetup(inetAddress);
-          } catch (IOException ex) {
+          } catch (Exception ex) {
             LOGGER.log(
                 Level.SEVERE, String.format("Server IP Address Exception: %s", ex.getMessage()));
           }

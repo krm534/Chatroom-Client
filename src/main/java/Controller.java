@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -32,14 +31,24 @@ public class Controller implements Initializable {
         e -> {
           try {
             handleButtonClick();
-          } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, "Controller Exception: " + ex.getMessage());
+          } catch (Exception exception) {
+            LOGGER.log(Level.SEVERE, "Controller Exception: " + exception.getMessage());
           }
         });
   }
 
-  public void handleButtonClick() throws IOException {
-    clientHandler.sendMessageHandler(textarea.getText());
+  public void handleButtonClick() throws Exception {
+    final String userInput = textarea.getText();
+
+    if (null == userInput || userInput.equals("")) {
+      throw new Exception("Controller Exception: Message is empty");
+    }
+
+    if (userInput.length() > Constants.MAX_MESSAGE_SIZE) {
+      throw new Exception("Controller Exception: Message is greater than max message size");
+    }
+
+    clientHandler.sendMessageHandler(userInput);
   }
 
   public void setClient(ClientHandler clientHandler) {
