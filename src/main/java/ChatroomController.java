@@ -11,9 +11,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 
 public class ChatroomController implements Initializable {
-  @FXML public ListView listview;
+  @FXML public ListView listView;
 
-  @FXML public TextArea textarea;
+  @FXML public TextArea textArea;
 
   @FXML public Button button;
 
@@ -25,12 +25,12 @@ public class ChatroomController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    listview.setItems(listItems);
+    listView.setItems(listItems);
     button.setOnAction(e -> handleButtonClick());
   }
 
   public void handleButtonClick() {
-    final String userInput = textarea.getText();
+    final String userInput = textArea.getText();
 
     if (null == userInput || userInput.equals("")) {
       displayErrorMessage("Error: Message is empty");
@@ -54,11 +54,11 @@ public class ChatroomController implements Initializable {
         () -> {
           listItems.add(message);
           errorText.setText("");
-          textarea.clear();
+          textArea.clear();
         });
   }
 
-  public void displayErrorMessage(String message) {
+  private void displayErrorMessage(String message) {
     Platform.runLater(
         () -> {
           errorText.setText(message);

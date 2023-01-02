@@ -49,7 +49,7 @@
             <Insets bottom="100.0" top="75.0" />
          </VBox.margin>
           </Text>
-          <TextField fx:id="textfield" focusTraversable="false" promptText="Enter Server IP Address" VBox.vgrow="ALWAYS">
+          <TextField fx:id="textField" focusTraversable="false" promptText="Enter Server IP Address" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets bottom="20.0" left="20.0" right="20.0" />
          </VBox.margin>

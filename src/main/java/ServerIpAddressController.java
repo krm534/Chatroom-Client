@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class ServerIpAddressController implements Initializable {
 
-  @FXML public TextField textfield;
+  @FXML public TextField textField;
 
   @FXML public Button button;
 
@@ -35,7 +35,7 @@ public class ServerIpAddressController implements Initializable {
     button.setOnAction(
         e -> {
           try {
-            final String userInput = textfield.getText();
+            final String userInput = textField.getText();
 
             if (null == userInput || userInput.equals("")) {
               displayErrorMessage("Error: IP address field is empty");
@@ -65,7 +65,7 @@ public class ServerIpAddressController implements Initializable {
     primaryStage.setScene(new Scene(loader.load()));
   }
 
-  public void displayErrorMessage(String message) {
+  private void displayErrorMessage(String message) {
     Platform.runLater(
         () -> {
           errorText.setText(message);

@@ -41,8 +41,8 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ListView fx:id="listview" VBox.vgrow="ALWAYS" />
-        <TextArea fx:id="textarea" promptText="Enter message to send to other clients..." wrapText="true" VBox.vgrow="ALWAYS" />
+        <ListView fx:id="listView" VBox.vgrow="ALWAYS" />
+        <TextArea fx:id="textArea" promptText="Enter message to send to other clients..." wrapText="true" VBox.vgrow="ALWAYS" />
         <Text fx:id="errorText" fill="#eb0808" strokeType="OUTSIDE" strokeWidth="0.0" VBox.vgrow="ALWAYS">
             <VBox.margin>
                 <Insets top="10.0" />
