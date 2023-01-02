@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 
-public class Controller implements Initializable {
+public class ChatroomController implements Initializable {
   @FXML public ListView listview;
 
   @FXML public TextArea textarea;
@@ -22,7 +22,7 @@ public class Controller implements Initializable {
 
   private ClientHandler clientHandler;
 
-  private static final Logger LOGGER = Logger.getLogger(Controller.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(ChatroomController.class.getName());
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -32,7 +32,7 @@ public class Controller implements Initializable {
           try {
             handleButtonClick();
           } catch (Exception exception) {
-            LOGGER.log(Level.SEVERE, "Controller Exception: " + exception.getMessage());
+            LOGGER.log(Level.SEVERE, "Chatroom Controller Exception: " + exception.getMessage());
           }
         });
   }
@@ -41,11 +41,12 @@ public class Controller implements Initializable {
     final String userInput = textarea.getText();
 
     if (null == userInput || userInput.equals("")) {
-      throw new Exception("Controller Exception: Message is empty");
+      throw new Exception("Chatroom Controller Exception: Message is empty");
     }
 
     if (userInput.length() > Constants.MAX_MESSAGE_SIZE) {
-      throw new Exception("Controller Exception: Message is greater than max message size");
+      throw new Exception(
+          "Chatroom Controller Exception: Message is greater than max message size");
     }
 
     clientHandler.sendMessageHandler(userInput);

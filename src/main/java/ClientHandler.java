@@ -7,16 +7,16 @@ import org.json.JSONObject;
 
 public class ClientHandler extends Thread {
   private String address;
-  private Controller controller;
+  private ChatroomController chatroomController;
   private Socket socket;
   private BufferedWriter bufferedWriter;
   private String userId;
   private static final Logger LOGGER = Logger.getLogger(ClientHandler.class.getName());
 
-  public ClientHandler(String address, Controller controller) {
+  public ClientHandler(String address, ChatroomController chatroomController) {
     try {
       this.address = address;
-      this.controller = controller;
+      this.chatroomController = chatroomController;
       this.socket = new Socket(address, Constants.DEFAULT_PORT);
     } catch (Exception e) {
       LOGGER.log(Level.SEVERE, "Client Exception: " + e.getMessage());
@@ -45,7 +45,7 @@ public class ClientHandler extends Thread {
 
       // Listen for messages from Server
       while (true) {
-        controller.addMessage(input.nextLine());
+        chatroomController.addMessage(input.nextLine());
       }
     } catch (IOException e) {
       LOGGER.log(Level.SEVERE, "Client Exception: " + e.getMessage());

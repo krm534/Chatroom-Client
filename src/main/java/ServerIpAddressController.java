@@ -47,14 +47,14 @@ public class ServerIpAddressController implements Initializable {
   }
 
   private void handleChatroomFxmlSetup(InetAddress serverIpAddress) throws IOException {
-    final Controller controller = new Controller();
+    final ChatroomController chatroomController = new ChatroomController();
     final ClientHandler clientHandler =
-        new ClientHandler(serverIpAddress.getHostName(), controller);
-    controller.setClient(clientHandler);
+        new ClientHandler(serverIpAddress.getHostName(), chatroomController);
+    chatroomController.setClient(clientHandler);
     clientHandler.start();
 
     final FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.MAIN_FXML_PATH));
-    loader.setController(controller);
+    loader.setController(chatroomController);
     primaryStage.setScene(new Scene(loader.load()));
   }
 }
