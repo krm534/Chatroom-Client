@@ -1,7 +1,5 @@
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Text;
 
 public class ChatroomController implements Initializable {
   @FXML public ListView listview;
@@ -18,35 +17,29 @@ public class ChatroomController implements Initializable {
 
   @FXML public Button button;
 
+  @FXML public Text errorText;
+
   final ObservableList<String> listItems = FXCollections.observableArrayList();
 
   private ClientHandler clientHandler;
 
-  private static final Logger LOGGER = Logger.getLogger(ChatroomController.class.getName());
-
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     listview.setItems(listItems);
-    button.setOnAction(
-        e -> {
-          try {
-            handleButtonClick();
-          } catch (Exception exception) {
-            LOGGER.log(Level.SEVERE, "Chatroom Controller Exception: " + exception.getMessage());
-          }
-        });
+    button.setOnAction(e -> handleButtonClick());
   }
 
-  public void handleButtonClick() throws Exception {
+  public void handleButtonClick() {
     final String userInput = textarea.getText();
 
     if (null == userInput || userInput.equals("")) {
-      throw new Exception("Chatroom Controller Exception: Message is empty");
+      displayErrorMessage("Error: Message is empty");
+      return;
     }
 
     if (userInput.length() > Constants.MAX_MESSAGE_SIZE) {
-      throw new Exception(
-          "Chatroom Controller Exception: Message is greater than max message size");
+      displayErrorMessage("Error: Message is greater than max message size");
+      return;
     }
 
     clientHandler.sendMessageHandler(userInput);
@@ -57,11 +50,18 @@ public class ChatroomController implements Initializable {
   }
 
   public void addMessage(String message) {
-    // Run on Main thread
     Platform.runLater(
         () -> {
           listItems.add(message);
+          errorText.setText("");
           textarea.clear();
+        });
+  }
+
+  public void displayErrorMessage(String message) {
+    Platform.runLater(
+        () -> {
+          errorText.setText(message);
         });
   }
 }

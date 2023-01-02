@@ -4,12 +4,14 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class ServerIpAddressController implements Initializable {
@@ -18,7 +20,9 @@ public class ServerIpAddressController implements Initializable {
 
   @FXML public Button button;
 
-  private Stage primaryStage;
+  @FXML public Text errorText;
+
+  private final Stage primaryStage;
 
   private static final Logger LOGGER = Logger.getLogger(ServerIpAddressController.class.getName());
 
@@ -34,7 +38,8 @@ public class ServerIpAddressController implements Initializable {
             final String userInput = textfield.getText();
 
             if (null == userInput || userInput.equals("")) {
-              throw new Exception("IP address field is empty");
+              displayErrorMessage("Error: IP address field is empty");
+              return;
             }
 
             final InetAddress inetAddress = InetAddress.getByName(userInput);
@@ -42,6 +47,7 @@ public class ServerIpAddressController implements Initializable {
           } catch (Exception ex) {
             LOGGER.log(
                 Level.SEVERE, String.format("Server IP Address Exception: %s", ex.getMessage()));
+            displayErrorMessage("Error: Invalid IP address was entered");
           }
         });
   }
@@ -53,8 +59,16 @@ public class ServerIpAddressController implements Initializable {
     chatroomController.setClient(clientHandler);
     clientHandler.start();
 
-    final FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.MAIN_FXML_PATH));
+    final FXMLLoader loader =
+        new FXMLLoader(getClass().getResource(Constants.CHATROOM_CLIENT_FXML_PATH));
     loader.setController(chatroomController);
     primaryStage.setScene(new Scene(loader.load()));
+  }
+
+  public void displayErrorMessage(String message) {
+    Platform.runLater(
+        () -> {
+          errorText.setText(message);
+        });
   }
 }

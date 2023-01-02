@@ -54,7 +54,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" />
          </VBox.margin>
       </TextField>
-      <Text fill="#eb0808" strokeType="OUTSIDE" strokeWidth="0.0" VBox.vgrow="ALWAYS">
+      <Text fx:id="errorText" fill="#eb0808" strokeType="OUTSIDE" strokeWidth="0.0" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets bottom="30.0" />
          </VBox.margin>
