@@ -32,9 +32,14 @@ public class ServerIpAddressController implements Initializable {
         e -> {
           try {
             final String userInput = textField.getText();
+
+            if (null == userInput || userInput.equals("")) {
+              throw new Exception("IP address field is empty");
+            }
+
             final InetAddress inetAddress = InetAddress.getByName(userInput);
             handleChatroomFxmlSetup(inetAddress);
-          } catch (IOException ex) {
+          } catch (Exception ex) {
             LOGGER.log(
                 Level.SEVERE, String.format("Server IP Address Exception: %s", ex.getMessage()));
           }
@@ -42,14 +47,14 @@ public class ServerIpAddressController implements Initializable {
   }
 
   private void handleChatroomFxmlSetup(InetAddress serverIpAddress) throws IOException {
-    final Controller controller = new Controller();
+    final ChatroomController chatroomController = new ChatroomController();
     final ClientHandler clientHandler =
-        new ClientHandler(serverIpAddress.getHostName(), controller);
-    controller.setClient(clientHandler);
+        new ClientHandler(serverIpAddress.getHostName(), chatroomController);
+    chatroomController.setClient(clientHandler);
     clientHandler.start();
 
     final FXMLLoader loader = new FXMLLoader(getClass().getResource(Constants.MAIN_FXML_PATH));
-    loader.setController(controller);
+    loader.setController(chatroomController);
     primaryStage.setScene(new Scene(loader.load()));
   }
 }

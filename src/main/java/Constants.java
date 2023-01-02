@@ -3,4 +3,5 @@ public class Constants {
   public static final int DEFAULT_PORT = 3000;
   public static final String MAIN_FXML_PATH = "./main.fxml";
   public static final String SERVER_IP_ADDRESS_FXML_PATH = "/ServerIpAddress.fxml";
+  public static final int MAX_MESSAGE_SIZE = 1024;
 }
