@@ -9,13 +9,10 @@
 plugins {
     id 'com.github.sherter.google-java-format' version '0.9'
     id "org.openjfx.javafxplugin" version "0.0.10"
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+    id 'java'
+    id 'application'
 }
-
-// Apply the java plugin to add support for Java
-apply plugin: 'java'
-
-// Apply the application plugin to add support for building an application
-apply plugin: 'application'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -41,17 +38,9 @@ dependencies {
 }
 
 javafx {
-    version = '12'
+    version = '11'
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 // Define the main class for the application
-mainClassName = 'ChatroomClient'
-
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'ChatroomClient'
-        )
-    }
-}
+mainClassName = 'Main'
