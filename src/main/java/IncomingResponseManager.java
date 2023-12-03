@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 public class IncomingResponseManager extends Thread {
   private String address;
-  private ChatroomController chatroomController;
+  private ChatroomMainPageController chatroomMainPageController;
   private Socket socket;
   private BufferedWriter bufferedWriter;
   private String userId;
@@ -22,10 +22,11 @@ public class IncomingResponseManager extends Thread {
   private static final Logger LOGGER =
       LogManager.getLogger(IncomingResponseManager.class.getName());
 
-  public IncomingResponseManager(String address, ChatroomController chatroomController) {
+  public IncomingResponseManager(
+      String address, ChatroomMainPageController chatroomMainPageController) {
     try {
       this.address = address;
-      this.chatroomController = chatroomController;
+      this.chatroomMainPageController = chatroomMainPageController;
       this.socket = new Socket(address, Constants.DEFAULT_PORT);
       gson = new Gson();
     } catch (Exception e) {
@@ -70,7 +71,7 @@ public class IncomingResponseManager extends Thread {
         message.setUuid(UUID.randomUUID().toString());
         if (null != message) {
           if (null != message.getMessage()) {
-            chatroomController.addMessage(message);
+            chatroomMainPageController.addMessage(message);
           }
           if (null != message.getAttachedB64Image()) {
             final String userDir = System.getProperty("user.dir");

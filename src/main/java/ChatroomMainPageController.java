@@ -1,4 +1,5 @@
 import Helper.Constants;
+import Helper.CustomListView;
 import Helper.Message;
 import java.io.File;
 import java.net.URL;
@@ -13,7 +14,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class ChatroomController implements Initializable {
+public class ChatroomMainPageController implements Initializable {
 
   @FXML public TextArea textArea;
 

@@ -1,4 +1,5 @@
-import Helper.Message;
+package Helper;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javafx.collections.FXCollections;

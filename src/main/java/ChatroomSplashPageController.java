@@ -1,4 +1,5 @@
 import Helper.Constants;
+import Helper.CustomListView;
 import Helper.Message;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -21,7 +22,7 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ServerIpAddressController implements Initializable {
+public class ChatroomSplashPageController implements Initializable {
 
   @FXML public TextField textField;
 
@@ -32,9 +33,9 @@ public class ServerIpAddressController implements Initializable {
   private final Stage primaryStage;
 
   private static final Logger LOGGER =
-      LogManager.getLogger(ServerIpAddressController.class.getName());
+      LogManager.getLogger(ChatroomSplashPageController.class.getName());
 
-  public ServerIpAddressController(Stage primaryStage) {
+  public ChatroomSplashPageController(Stage primaryStage) {
     this.primaryStage = primaryStage;
   }
 
@@ -61,15 +62,16 @@ public class ServerIpAddressController implements Initializable {
 
   private void handleChatroomFxmlSetup(InetAddress serverIpAddress) throws IOException {
     final CustomListView customListView = new CustomListView();
-    final ChatroomController chatroomController = new ChatroomController();
+    final ChatroomMainPageController chatroomMainPageController = new ChatroomMainPageController();
     final IncomingResponseManager incomingResponseManager =
-        new IncomingResponseManager(serverIpAddress.getHostName(), chatroomController);
-    chatroomController.setParams(incomingResponseManager, this.primaryStage, customListView);
+        new IncomingResponseManager(serverIpAddress.getHostName(), chatroomMainPageController);
+    chatroomMainPageController.setParams(
+        incomingResponseManager, this.primaryStage, customListView);
     incomingResponseManager.start();
 
     final FXMLLoader loader =
-        new FXMLLoader(getClass().getResource(Constants.CHATROOM_CLIENT_FXML_PATH));
-    loader.setController(chatroomController);
+        new FXMLLoader(getClass().getResource(Constants.CHATROOM_CLIENT_MAIN_PAGE_FXML_PATH));
+    loader.setController(chatroomMainPageController);
 
     final VBox vbox = loader.load();
     final ObservableList<Node> nodeList = vbox.getChildren();
