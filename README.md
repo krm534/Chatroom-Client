@@ -5,7 +5,7 @@ Java application that runs the client portion of a chatroom.
 - The compatible Chatroom Server located [here](https://github.com/krm534/Chatroom-Server) must be started first for the Chatroom Client application to work correctly.
 - At least Java JDK 11 must be installed to use this since JavaFX depends on this JDK version.
 
-## How to Use?
+## How to use?
 - Enter the IP address of the Chatroom Server instance on the landing page once the client is started.
 - If the connection is made correctly, you should be taken to the chatroom page where messages and images can be sent to anyone connected to the Chatroom Server instance.
 
@@ -15,6 +15,10 @@ Java application that runs the client portion of a chatroom.
 - The message field is mandatory and the Chatroom Server will not process the request unless it is complete.
 - Images that are sent by yourself or other client users are stored in the /images directory in the directory where the .jar file is run from.
 - Log files are stored in the /log directory in the directory where the .jar file is run from.
+
+## Snapshots
+![Screenshot from 2023-12-03 18-05-16](https://github.com/krm534/Chatroom-Client/assets/25673410/86dc2baa-a5d8-4d31-9f4c-3206327b2e4b)
+![Screenshot from 2023-12-03 18-06-46](https://github.com/krm534/Chatroom-Client/assets/25673410/2810aa5a-b2ba-4629-86cb-504107effe28)
 
 ## TODO
 - Add update to the client's landing page UI to have checkbox for enabling TLS support so messages between client / server are encrypted.
