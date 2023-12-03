@@ -1,18 +1,25 @@
+import Helper.Constants;
+import Helper.Message;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ServerIpAddressController implements Initializable {
 
@@ -24,7 +31,8 @@ public class ServerIpAddressController implements Initializable {
 
   private final Stage primaryStage;
 
-  private static final Logger LOGGER = Logger.getLogger(ServerIpAddressController.class.getName());
+  private static final Logger LOGGER =
+      LogManager.getLogger(ServerIpAddressController.class.getName());
 
   public ServerIpAddressController(Stage primaryStage) {
     this.primaryStage = primaryStage;
@@ -45,30 +53,38 @@ public class ServerIpAddressController implements Initializable {
             final InetAddress inetAddress = InetAddress.getByName(userInput);
             handleChatroomFxmlSetup(inetAddress);
           } catch (Exception ex) {
-            LOGGER.log(
-                Level.SEVERE, String.format("Server IP Address Exception: %s", ex.getMessage()));
+            LOGGER.error(String.format("Server IP Address Exception: %s", ex.getMessage()));
             displayErrorMessage("Error: Invalid IP address was entered");
           }
         });
   }
 
   private void handleChatroomFxmlSetup(InetAddress serverIpAddress) throws IOException {
+    final CustomListView customListView = new CustomListView();
     final ChatroomController chatroomController = new ChatroomController();
-    final ClientHandler clientHandler =
-        new ClientHandler(serverIpAddress.getHostName(), chatroomController);
-    chatroomController.setClient(clientHandler);
-    clientHandler.start();
+    final IncomingResponseManager incomingResponseManager =
+        new IncomingResponseManager(serverIpAddress.getHostName(), chatroomController);
+    chatroomController.setParams(incomingResponseManager, this.primaryStage, customListView);
+    incomingResponseManager.start();
 
     final FXMLLoader loader =
         new FXMLLoader(getClass().getResource(Constants.CHATROOM_CLIENT_FXML_PATH));
     loader.setController(chatroomController);
-    primaryStage.setScene(new Scene(loader.load()));
+
+    final VBox vbox = loader.load();
+    final ObservableList<Node> nodeList = vbox.getChildren();
+    final ObservableList<Node> newNodeList = FXCollections.observableArrayList();
+
+    final ListView<Message> messageListView = customListView.getMessageView();
+    newNodeList.add(messageListView);
+    newNodeList.addAll(nodeList);
+
+    vbox.getChildren().clear();
+    vbox.getChildren().addAll(newNodeList);
+    primaryStage.setScene(new Scene(vbox));
   }
 
   private void displayErrorMessage(String message) {
-    Platform.runLater(
-        () -> {
-          errorText.setText(message);
-        });
+    Platform.runLater(() -> errorText.setText(message));
   }
 }
