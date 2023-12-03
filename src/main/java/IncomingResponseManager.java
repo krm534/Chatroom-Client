@@ -57,8 +57,8 @@ public class IncomingResponseManager extends Thread {
       // Listen for messages from Server
       while (true) {
         final StringBuilder serverMessage = new StringBuilder();
-        while (input.hasNext()) {
-          String message = input.next();
+        while (input.hasNextLine()) {
+          String message = input.nextLine();
           serverMessage.append(message);
 
           if (message.contains(Constants.DELIMITER)) {
