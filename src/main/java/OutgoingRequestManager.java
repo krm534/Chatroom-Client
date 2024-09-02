@@ -3,19 +3,25 @@ import Helper.Message;
 import com.google.gson.Gson;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import javax.crypto.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class OutgoingRequestManager extends Thread {
   private final BufferedWriter bufferedWriter;
   private final Message message;
-
   private final Gson gson;
+  private final IncomingResponseManager responseManager;
   private static final Logger LOGGER = LogManager.getLogger(OutgoingRequestManager.class.getName());
 
-  public OutgoingRequestManager(BufferedWriter bufferedWriter, Message message) {
+  public OutgoingRequestManager(
+      BufferedWriter bufferedWriter, Message message, IncomingResponseManager responseManager) {
     this.bufferedWriter = bufferedWriter;
     this.message = message;
+    this.responseManager = responseManager;
     this.gson = new Gson();
   }
 
@@ -25,10 +31,16 @@ public class OutgoingRequestManager extends Thread {
       String json = gson.toJson(message, Message.class);
       json += Constants.DELIMITER;
       LOGGER.info(String.format("Message to be sent to chatroom server is %s", json));
-      bufferedWriter.write(json);
+      bufferedWriter.write(
+          Base64.getEncoder().encodeToString(responseManager.encryptMessage(json)));
       bufferedWriter.newLine();
       bufferedWriter.flush();
-    } catch (IOException e) {
+    } catch (IOException
+        | NoSuchPaddingException
+        | NoSuchAlgorithmException
+        | InvalidKeyException
+        | IllegalBlockSizeException
+        | BadPaddingException e) {
       LOGGER.error(String.format("ServerSender Exception: %s", e.getMessage()));
     }
   }
