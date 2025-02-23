@@ -24,9 +24,9 @@ import org.apache.logging.log4j.Logger;
 
 public class ChatroomSplashPageController implements Initializable {
 
-  @FXML public TextField textField;
+  @FXML public TextField serverIpAddressTextField;
 
-  @FXML public Button button;
+  @FXML public Button sendButton;
 
   @FXML public Text errorText;
 
@@ -41,10 +41,10 @@ public class ChatroomSplashPageController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    button.setOnAction(
+    sendButton.setOnAction(
         e -> {
           try {
-            final String userInput = textField.getText();
+            final String userInput = serverIpAddressTextField.getText();
 
             if (null == userInput || userInput.equals("")) {
               displayErrorMessage("Error: IP address field is empty");
@@ -52,7 +52,7 @@ public class ChatroomSplashPageController implements Initializable {
             }
 
             final InetAddress inetAddress = InetAddress.getByName(userInput);
-            handleChatroomFxmlSetup(inetAddress);
+            handleChatroomMainPageFxmlSetup(inetAddress);
           } catch (Exception ex) {
             LOGGER.error(String.format("Server IP Address Exception: %s", ex.getMessage()));
             displayErrorMessage("Error: Invalid IP address was entered");
@@ -60,14 +60,14 @@ public class ChatroomSplashPageController implements Initializable {
         });
   }
 
-  private void handleChatroomFxmlSetup(InetAddress serverIpAddress) throws IOException {
+  private void handleChatroomMainPageFxmlSetup(InetAddress serverIpAddress) throws IOException {
     final CustomListView customListView = new CustomListView();
     final ChatroomMainPageController chatroomMainPageController = new ChatroomMainPageController();
-    final IncomingResponseManager incomingResponseManager =
-        new IncomingResponseManager(serverIpAddress.getHostName(), chatroomMainPageController);
-    chatroomMainPageController.setParams(
-        incomingResponseManager, this.primaryStage, customListView);
-    incomingResponseManager.start();
+
+    final ClientManager clientManager =
+        new ClientManager(serverIpAddress.getHostName(), chatroomMainPageController);
+    clientManager.setupClientManager();
+    chatroomMainPageController.setParams(clientManager, this.primaryStage, customListView);
 
     final FXMLLoader loader =
         new FXMLLoader(getClass().getResource(Constants.CHATROOM_CLIENT_MAIN_PAGE_FXML_PATH));

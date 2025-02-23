@@ -40,7 +40,7 @@
 
 <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <TextArea fx:id="textArea" promptText="Enter message to send to other clients..." wrapText="true" VBox.vgrow="ALWAYS" />
+        <TextArea fx:id="messageTextArea" promptText="Enter message to send to other clients..." wrapText="true" VBox.vgrow="ALWAYS" />
         <Text fx:id="errorText" fill="#eb0808" strokeType="OUTSIDE" strokeWidth="0.0" VBox.vgrow="ALWAYS">
             <VBox.margin>
                 <Insets top="10.0" />
@@ -56,7 +56,7 @@
             <Insets bottom="10.0" />
          </VBox.margin>
       </Text>
-      <Button fx:id="button" contentDisplay="CENTER" mnemonicParsing="false" text="Send" textAlignment="CENTER">
+      <Button fx:id="sendButton" contentDisplay="CENTER" mnemonicParsing="false" text="Send" textAlignment="CENTER">
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>

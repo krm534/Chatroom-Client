@@ -8,6 +8,5 @@ public class Constants {
       "/ChatroomClientSplashPage.fxml";
   public static final int MAX_MESSAGE_SIZE = 1024;
   public static final String DELIMITER = "DELIMITER";
-  public static final int DEFAULT_RSA_KEY_SIZE = 1024;
   public static final int DEFAULT_AES_KEY_SIZE = 256;
 }
