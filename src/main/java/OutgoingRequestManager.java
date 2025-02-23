@@ -14,14 +14,14 @@ public class OutgoingRequestManager extends Thread {
   private final BufferedWriter bufferedWriter;
   private final Message message;
   private final Gson gson;
-  private final IncomingResponseManager responseManager;
+  private final SecretKey secretKey;
   private static final Logger LOGGER = LogManager.getLogger(OutgoingRequestManager.class.getName());
 
   public OutgoingRequestManager(
-      BufferedWriter bufferedWriter, Message message, IncomingResponseManager responseManager) {
+      BufferedWriter bufferedWriter, Message message, SecretKey secretKey) {
     this.bufferedWriter = bufferedWriter;
     this.message = message;
-    this.responseManager = responseManager;
+    this.secretKey = secretKey;
     this.gson = new Gson();
   }
 
@@ -32,7 +32,8 @@ public class OutgoingRequestManager extends Thread {
       json += Constants.DELIMITER;
       LOGGER.info(String.format("Message to be sent to chatroom server is %s", json));
       bufferedWriter.write(
-          Base64.getEncoder().encodeToString(responseManager.encryptMessage(json)));
+          Base64.getEncoder()
+              .encodeToString(EncryptionDecryptionManager.encryptMessage(json, secretKey)));
       bufferedWriter.newLine();
       bufferedWriter.flush();
     } catch (IOException

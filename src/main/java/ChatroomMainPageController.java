@@ -16,9 +16,9 @@ import javafx.stage.Stage;
 
 public class ChatroomMainPageController implements Initializable {
 
-  @FXML public TextArea textArea;
+  @FXML public TextArea messageTextArea;
 
-  @FXML public Button button;
+  @FXML public Button sendButton;
 
   @FXML public Text errorText;
 
@@ -26,9 +26,9 @@ public class ChatroomMainPageController implements Initializable {
 
   @FXML public Text attachedImageName;
 
-  private IncomingResponseManager clientHandler;
+  private ClientManager clientManager;
 
-  private Stage stage;
+  private Stage primaryStage;
 
   private File selectedFile;
 
@@ -36,12 +36,12 @@ public class ChatroomMainPageController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    button.setOnAction(e -> handleButtonClick());
+    sendButton.setOnAction(e -> handleButtonClick());
     attachedImageButton.setOnAction(e -> attachImage());
   }
 
   public void handleButtonClick() {
-    final String userInput = textArea.getText();
+    final String userInput = messageTextArea.getText();
     byte[] image = null;
 
     if (null == userInput || userInput.equals("")) {
@@ -62,7 +62,7 @@ public class ChatroomMainPageController implements Initializable {
       }
     }
 
-    clientHandler.sendMessageHandler(userInput, image);
+    clientManager.sendMessageHandler(userInput, image);
   }
 
   public void attachImage() {
@@ -71,17 +71,18 @@ public class ChatroomMainPageController implements Initializable {
     fileChooser
         .getExtensionFilters()
         .add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-    this.selectedFile = fileChooser.showOpenDialog(this.stage);
+    this.selectedFile = fileChooser.showOpenDialog(this.primaryStage);
 
     if (null != this.selectedFile) {
       this.attachedImageName.setText(this.selectedFile.getName());
     }
   }
 
+  // TODO: Refactor to not use this method this way
   public void setParams(
-      IncomingResponseManager incomingResponseManager, Stage stage, CustomListView customListView) {
-    this.clientHandler = incomingResponseManager;
-    this.stage = stage;
+      ClientManager incomingResponseManager, Stage stage, CustomListView customListView) {
+    this.clientManager = incomingResponseManager;
+    this.primaryStage = stage;
     this.customListView = customListView;
   }
 
@@ -92,7 +93,7 @@ public class ChatroomMainPageController implements Initializable {
           errorText.setText("");
           attachedImageName.setText("");
           selectedFile = null;
-          textArea.clear();
+          messageTextArea.clear();
         });
   }
 
