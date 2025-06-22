@@ -19,3 +19,4 @@ Java application that runs the client portion of a chatroom.
 ## Snapshots
 ![Screenshot from 2023-12-03 18-05-16](https://github.com/krm534/Chatroom-Client/assets/25673410/86dc2baa-a5d8-4d31-9f4c-3206327b2e4b)
 ![Screenshot from 2023-12-03 18-06-46](https://github.com/krm534/Chatroom-Client/assets/25673410/2810aa5a-b2ba-4629-86cb-504107effe28)
+
