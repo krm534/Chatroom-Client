@@ -14,6 +14,7 @@ Java application that runs the client portion of a chatroom.
 This application works fine by simply building and running the Gradle Shadow plugin's fat .jar file on a Linux-based OS. But, on Windows OS, the following command had to be used to run the application's .jar file: `java --module-path <path_to_javafx_11_sdk_lib_directory> --add-modules=javafx.base,javafx.controls,javafx.fxml,javafx.graphics,javafx.media,javafx.swing,javafx.web -jar <jar_file>`. The `path_to_javafx_11_sdk_lib_directory` property above is the location of the JavaFX 11 SDK. This SDK can be downloaded for Windows [here](https://gluonhq.com/products/javafx/)
 - The client's chatroom page currently only allows for 1 image to be attached to a message.
 - The message field is mandatory, and the Chatroom Server will not process the request unless it is complete.
+- All messages between clients and the server are encrypted using symmetric key encryption with AES.
 - Images that are sent by you or other client users are stored in the /images directory in the directory where the .jar file is run from.
 - Log files are stored in the /log directory in the directory where the .jar file is run from.
 
