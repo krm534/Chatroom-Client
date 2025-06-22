@@ -16,11 +16,8 @@ public class EncryptionDecryptionManager {
   private static final Logger LOGGER =
       LogManager.getLogger(EncryptionDecryptionManager.class.getName());
 
-  public static SecretKey handleEncryptionSetup(String publicKeyString)
-      throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException,
-          InvalidKeyException {
-    final PublicKey publicKey = getPublicKeyFromServer(publicKeyString);
-    return generateSymmetricKey(publicKey);
+  public static SecretKey handleEncryptionSetup() throws NoSuchAlgorithmException {
+    return generateSymmetricKey();
   }
 
   public static PublicKey getPublicKeyFromServer(String publicKeyString)
@@ -34,8 +31,7 @@ public class EncryptionDecryptionManager {
     return publicKey;
   }
 
-  private static SecretKey generateSymmetricKey(PublicKey publicKey)
-      throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
+  private static SecretKey generateSymmetricKey() throws NoSuchAlgorithmException {
     final KeyGenerator keyGenerator = KeyGenerator.getInstance(KeyType.AES.name());
     keyGenerator.init(Constants.DEFAULT_AES_KEY_SIZE);
     final SecretKey secretKey = keyGenerator.generateKey();

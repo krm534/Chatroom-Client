@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -16,39 +17,46 @@ import javafx.stage.Stage;
 
 public class CustomListView {
 
-  public final ListView<Message> messageView = new ListView<>();
-  public final ObservableList<Message> messages = FXCollections.observableArrayList();
+  public final ListView<MessagesJO> messageView = new ListView<>();
+  public final ObservableList<MessagesJO> messagesJOS = FXCollections.observableArrayList();
 
   public CustomListView() {
-    messageView.setItems(messages);
+    messageView.setItems(messagesJOS);
     messageView.setCellFactory(list -> new CustomCellFactory());
   }
 
-  public ListView<Message> getMessageView() {
+  public ListView<MessagesJO> getMessageView() {
     return messageView;
   }
 
-  public ObservableList<Message> getMessages() {
-    return messages;
+  public ObservableList<MessagesJO> getMessages() {
+    return messagesJOS;
   }
 
-  static class CustomCellFactory extends ListCell<Message> {
+  static class CustomCellFactory extends ListCell<MessagesJO> {
     HBox hbox = new HBox();
-    Label label = new Label("");
+    Label messageLabel = new Label("");
+    Label usernameLabel = new Label("");
+    Label timestampLabel = new Label("");
     Pane pane = new Pane();
     Button button = new Button("Image");
-    Message message;
+    MessagesJO messagesJO;
 
     public CustomCellFactory() {
       super();
-      hbox.getChildren().addAll(label, pane, button);
+
+      timestampLabel.setPadding(new Insets(0, 10, 0, 10));
+      usernameLabel.setPadding(new Insets(0, 10, 0, 10));
+      messageLabel.setPadding(new Insets(0, 10, 0, 10));
+      hbox.getChildren().addAll(timestampLabel, usernameLabel, messageLabel, pane, button);
+
       button.setOnAction(
           event -> {
             Image image;
             try {
               image =
                   new Image(
-                      new FileInputStream(String.format("./images/%s.png", message.getUuid())));
+                      new FileInputStream(String.format("./images/%s.png", messagesJO.getUuid())));
             } catch (FileNotFoundException e) {
               throw new RuntimeException(e);
             }
@@ -67,12 +75,14 @@ public class CustomListView {
     }
 
     @Override
-    protected void updateItem(Message item, boolean empty) {
+    protected void updateItem(MessagesJO item, boolean empty) {
       super.updateItem(item, empty);
-      message = item;
+      messagesJO = item;
 
       if (null != item && !empty) {
-        label.setText(message.getMessage());
+        messageLabel.setText(messagesJO.getMessage());
+        timestampLabel.setText(messagesJO.getTimestamp());
+        usernameLabel.setText(messagesJO.getUserId());
 
         if (null == item.getAttachedB64Image()) {
           button.setVisible(false);

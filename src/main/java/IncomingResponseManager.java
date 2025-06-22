@@ -1,13 +1,10 @@
 import Helper.Constants;
-import Helper.Message;
+import Helper.MessagesJO;
 import com.google.gson.Gson;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Scanner;
 import java.util.UUID;
-import javax.imageio.ImageIO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,22 +37,13 @@ public class IncomingResponseManager extends Thread {
                 StandardCharsets.UTF_8);
         decryptedMessageString = decryptedMessageString.replace(Constants.DELIMITER, "");
         LOGGER.info(String.format("Decrypted message is %s", decryptedMessageString));
-        final Message message = gson.fromJson(decryptedMessageString, Message.class);
-        message.setUuid(UUID.randomUUID().toString());
-        if (null != message.getMessage()) {
-          clientManager.getChatroomMainPageController().addMessage(message);
+        final MessagesJO messagesJO = gson.fromJson(decryptedMessageString, MessagesJO.class);
+        messagesJO.setUuid(UUID.randomUUID().toString());
+        if (null != messagesJO.getMessage()) {
+          clientManager.getChatroomMainPageController().addMessage(messagesJO);
         }
-        if (null != message.getAttachedB64Image()) {
-          final String userDir = System.getProperty("user.dir");
-          final String attachedImage = String.format("/images/%s.png", message.getUuid());
-          final File outputFile = new File(userDir + attachedImage);
-          outputFile.mkdirs();
-
-          final BufferedImage image =
-              ImageIO.read(
-                  new ByteArrayInputStream(
-                      Base64.getDecoder().decode(message.getAttachedB64Image())));
-          ImageIO.write(image, "png", outputFile);
+        if (null != messagesJO.getAttachedB64Image()) {
+          clientManager.storeImage(messagesJO);
         }
       }
     } catch (Exception e) {

@@ -1,5 +1,5 @@
 import Helper.Constants;
-import Helper.Message;
+import Helper.MessagesJO;
 import com.google.gson.Gson;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -12,15 +12,15 @@ import org.apache.logging.log4j.Logger;
 
 public class OutgoingRequestManager extends Thread {
   private final BufferedWriter bufferedWriter;
-  private final Message message;
+  private final MessagesJO messagesJO;
   private final Gson gson;
   private final SecretKey secretKey;
   private static final Logger LOGGER = LogManager.getLogger(OutgoingRequestManager.class.getName());
 
   public OutgoingRequestManager(
-      BufferedWriter bufferedWriter, Message message, SecretKey secretKey) {
+      BufferedWriter bufferedWriter, MessagesJO messagesJO, SecretKey secretKey) {
     this.bufferedWriter = bufferedWriter;
-    this.message = message;
+    this.messagesJO = messagesJO;
     this.secretKey = secretKey;
     this.gson = new Gson();
   }
@@ -28,7 +28,7 @@ public class OutgoingRequestManager extends Thread {
   @Override
   public void run() {
     try {
-      String json = gson.toJson(message, Message.class);
+      String json = gson.toJson(messagesJO, MessagesJO.class);
       json += Constants.DELIMITER;
       LOGGER.info(String.format("Message to be sent to chatroom server is %s", json));
       bufferedWriter.write(

@@ -1,6 +1,7 @@
 import Helper.Constants;
 import Helper.CustomListView;
-import Helper.Message;
+import Helper.MessageType;
+import Helper.MessagesJO;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Files;
@@ -62,7 +63,7 @@ public class ChatroomMainPageController implements Initializable {
       }
     }
 
-    clientManager.sendMessageHandler(userInput, image);
+    clientManager.sendMessageHandler(userInput, image, MessageType.Normal);
   }
 
   public void attachImage() {
@@ -86,10 +87,10 @@ public class ChatroomMainPageController implements Initializable {
     this.customListView = customListView;
   }
 
-  public void addMessage(Message message) {
+  public void addMessage(MessagesJO messagesJO) {
     Platform.runLater(
         () -> {
-          customListView.getMessages().add(message);
+          customListView.getMessages().add(messagesJO);
           errorText.setText("");
           attachedImageName.setText("");
           selectedFile = null;
