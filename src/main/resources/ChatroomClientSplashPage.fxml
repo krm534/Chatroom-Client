@@ -39,7 +39,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Chatroom Client" VBox.vgrow="ALWAYS">
               <font>
@@ -49,16 +49,21 @@
             <Insets bottom="100.0" top="75.0" />
          </VBox.margin>
           </Text>
-          <TextField fx:id="serverIpAddressTextField" focusTraversable="false" promptText="Enter Server IP Address" VBox.vgrow="ALWAYS">
-         <VBox.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" />
-         </VBox.margin>
-      </TextField>
       <Text fx:id="errorText" fill="#eb0808" strokeType="OUTSIDE" strokeWidth="0.0" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets bottom="30.0" />
          </VBox.margin>
       </Text>
-          <Button fx:id="sendButton" contentDisplay="CENTER" mnemonicParsing="false" text="Send" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
+      <TextField fx:id="usernameTextField" promptText="Enter Username" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </VBox.margin>
+      </TextField>
+          <TextField fx:id="serverIpAddressTextField" focusTraversable="false" promptText="Enter Server IP Address" VBox.vgrow="ALWAYS">
+         <VBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" />
+         </VBox.margin>
+      </TextField>
+          <Button fx:id="sendButton" alignment="BOTTOM_CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Send" textAlignment="CENTER" VBox.vgrow="ALWAYS" />
     </children>
 </VBox>

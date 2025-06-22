@@ -1,6 +1,6 @@
 import Helper.Constants;
 import Helper.CustomListView;
-import Helper.Message;
+import Helper.MessagesJO;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
@@ -26,6 +26,8 @@ public class ChatroomSplashPageController implements Initializable {
 
   @FXML public TextField serverIpAddressTextField;
 
+  @FXML public TextField usernameTextField;
+
   @FXML public Button sendButton;
 
   @FXML public Text errorText;
@@ -44,15 +46,21 @@ public class ChatroomSplashPageController implements Initializable {
     sendButton.setOnAction(
         e -> {
           try {
-            final String userInput = serverIpAddressTextField.getText();
+            final String serverIpAddressTextFieldText = serverIpAddressTextField.getText();
+            final String usernameTextFieldText = usernameTextField.getText();
 
-            if (null == userInput || userInput.equals("")) {
+            if (null == serverIpAddressTextFieldText || serverIpAddressTextFieldText.equals("")) {
               displayErrorMessage("Error: IP address field is empty");
               return;
             }
 
-            final InetAddress inetAddress = InetAddress.getByName(userInput);
-            handleChatroomMainPageFxmlSetup(inetAddress);
+            if (null == usernameTextFieldText || usernameTextFieldText.equals("")) {
+              displayErrorMessage("Error: Username field is empty");
+              return;
+            }
+
+            final InetAddress inetAddress = InetAddress.getByName(serverIpAddressTextFieldText);
+            handleChatroomMainPageFxmlSetup(inetAddress, usernameTextFieldText);
           } catch (Exception ex) {
             LOGGER.error(String.format("Server IP Address Exception: %s", ex.getMessage()));
             displayErrorMessage("Error: Invalid IP address was entered");
@@ -60,12 +68,13 @@ public class ChatroomSplashPageController implements Initializable {
         });
   }
 
-  private void handleChatroomMainPageFxmlSetup(InetAddress serverIpAddress) throws IOException {
+  private void handleChatroomMainPageFxmlSetup(InetAddress serverIpAddress, String username)
+      throws IOException {
     final CustomListView customListView = new CustomListView();
     final ChatroomMainPageController chatroomMainPageController = new ChatroomMainPageController();
 
     final ClientManager clientManager =
-        new ClientManager(serverIpAddress.getHostName(), chatroomMainPageController);
+        new ClientManager(serverIpAddress.getHostName(), chatroomMainPageController, username);
     clientManager.setupClientManager();
     chatroomMainPageController.setParams(clientManager, this.primaryStage, customListView);
 
@@ -77,7 +86,7 @@ public class ChatroomSplashPageController implements Initializable {
     final ObservableList<Node> nodeList = vbox.getChildren();
     final ObservableList<Node> newNodeList = FXCollections.observableArrayList();
 
-    final ListView<Message> messageListView = customListView.getMessageView();
+    final ListView<MessagesJO> messageListView = customListView.getMessageView();
     newNodeList.add(messageListView);
     newNodeList.addAll(nodeList);
 
